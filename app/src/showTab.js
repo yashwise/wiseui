@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FileUpload from './uploadVCard';
 import Form from './enterContactSearch';
 import Transcript from './transcript';
+import './showTab.css';
 
 // Define a custom component called Tab
 function Tab() {

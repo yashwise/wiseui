@@ -1,8 +1,8 @@
-// Import React and useState hook
+// Import library
 import React, { useState } from "react";
-
-// Import vCard library
 import vCard from 'vcf';
+
+import './enterContactSearch.css';
 
 // Define a custom component called Form
 function Form() {
@@ -10,6 +10,7 @@ function Form() {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [company, setCompany] = useState("");
+  const [response, setResponse] = useState(null);
 
   // Define a function to handle form submission
   const handleSubmit = (event) => {
@@ -40,7 +41,8 @@ function Form() {
       .then((response) => response.json())
       .then((result) => {
         // Handle the result from the Azure function
-        console.log(result);
+        setResponse(result);
+
       })
       .catch((error) => {
         // Handle any error from the fetch request
@@ -50,33 +52,33 @@ function Form() {
 
   // Return the JSX code for rendering the form
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name:</label>
-      <input
-        type="text"
-        id="name"
-        value={name}
+    <div>
+      <form onSubmit={handleSubmit}>
+        <h1>Enter Search Details</h1>
+        <label htmlFor="name">Name:</label>
+        <input type="text" id="name" value={name}
         onChange={(event) => setName(event.target.value)}
-        required
-      />
-      <label htmlFor="address">Address:</label>
-      <input
-        type="text"
-        id="address"
-        value={address}
+        required />
+        
+        <label htmlFor="address">Address:</label>
+        <input type="text" id="address" value={address}
         onChange={(event) => setAddress(event.target.value)}
-        required
-      />
-      <label htmlFor="company">Company:</label>
-      <input
-        type="text"
-        id="company"
-        value={company}
+        required/>
+        
+        <label htmlFor="company">Company:</label>
+        <input type="text" id="company" value={company}
         onChange={(event) => setCompany(event.target.value)}
-        required
-      />
-      <button type="submit">Submit</button>
+        required/>
+        
+        <button type="submit">Submit</button>
     </form>
+    {response && (
+      <div>
+      <h2>Response</h2>
+      <pre>{JSON.stringify(response, null, 2)}</pre>
+      </div>
+      )}
+  </div>
   );
 }
 

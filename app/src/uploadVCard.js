@@ -1,6 +1,7 @@
 // Import React and other dependencies
 import React, { useState } from "react";
 import axios from "axios";
+import './uploadVCard.css';
 
 // Define a custom component for file upload
 function FileUpload() {
