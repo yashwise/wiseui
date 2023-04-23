@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
   const [transcript, setTranscript] = React.useState('');
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,9 +18,7 @@ function App() {
       const data = await fetch(url);
       console.log(data);
       const json = await data.json();
-      if (json.blobs_list){
-        setblobsList(json.blobs_list);
-      }
+      if (json.blobs_list)setblobsList(json.blobs_list);
       setLoading(false)
     };
 
@@ -40,14 +39,27 @@ function App() {
     } 
   };
 
-  const handleSalesForce = async() => {
-
+  const handleSalesForce = async(event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const url = "https://yashwisetestapp.azurewebsites.net/api/landing";
+      const response = await fetch( url, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(summary)
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+    setIsSubmitting(false);
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <div>{loading && <p>Abhi</p>}</div>
+        <div>{loading && <p>Loading</p>}</div>
         <p>
           Select Transcript to view Summary
         </p>
@@ -66,7 +78,7 @@ function App() {
         <div><h5>Spiced Transcript:</h5></div>
         <p>{summary}</p>
         <button onClick={() => handleItemClick(selectedItemId, true)}>Regenerate</button>
-        <button onClick={() => handleSalesForce()}>Save to Salesforce</button>
+        <button disabled={isSubmitting} onClick={handleSalesForce}>Save to Salesforce</button>
       </header>
     </div>
   );
