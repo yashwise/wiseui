@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+function Transcript() {
 
   const templist = [];//['testTranscript1.txt', 'testTranscript2.txt'];
   const [blobsList, setblobsList] = React.useState(templist);
@@ -45,8 +43,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="Get-Transcript">
+      <header className="Transcript-header">
         <div>{loading && <p>Abhi</p>}</div>
         <p>
           Select Transcript to view Summary
@@ -72,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default Transcript;
