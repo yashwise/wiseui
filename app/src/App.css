@@ -33,6 +33,11 @@ p {
   font: 20
 }
 
+textarea{
+  height: 100px;
+  width: 1000px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

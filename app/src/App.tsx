@@ -6,11 +6,24 @@ function App() {
 
   const templist = [];//['testTranscript1.txt', 'testTranscript2.txt'];
   const [blobsList, setblobsList] = React.useState(templist);
-  const [summary, setSummary] = React.useState('');
+  const tempSummary = {
+    'summary': '', 
+    'pain': '', 
+    'impact': '', 
+    'criticalEvent': '',
+    'decisionCriteria': ''
+  }
+  const [spiced, setSpiced] = React.useState(tempSummary);
+  
+  // setSpiced( spiced => ({
+  //   ...spiced, 
+  //   ...tempSummary
+  // }));
+  
   const [transcript, setTranscript] = React.useState('');
   const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  // const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +34,6 @@ function App() {
       if (json.blobs_list)setblobsList(json.blobs_list);
       setLoading(false)
     };
-
     fetchData();
   }, []);
 
@@ -31,30 +43,35 @@ function App() {
       setLoading(true)
       let url = "https://yashwisetestapp.azurewebsites.net/api/httpexample";
       const data = await fetch(`${url}?transcript=${blobsList[itemId]}`);
-      console.log(data);
       const json = await data.json();
+      console.log(json);
       if (json.transcript) setTranscript(json.transcript);
-      if (json.summary) setSummary(json.summary);
+      if (json.spiced){
+        setSpiced( spiced => ({
+          ...spiced, 
+          ...json.spiced
+        }));
+      }
       setLoading(false)
     } 
   };
 
-  const handleSalesForce = async(event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    try {
-      const url = "https://yashwisetestapp.azurewebsites.net/api/landing";
-      const response = await fetch( url, {
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(summary)
-      });
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-    setIsSubmitting(false);
-  }
+  // const handleSalesForce = async(event) => {
+  //   event.preventDefault();
+  //   setIsSubmitting(true);
+  //   try {
+  //     const url = "https://yashwisetestapp.azurewebsites.net/api/landing";
+  //     const response = await fetch( url, {
+  //       method: 'POST', 
+  //       headers: { 'Content-Type': 'application/json'},
+  //       body: JSON.stringify(summary)
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   setIsSubmitting(false);
+  // }
 
   return (
     <div className="App">
@@ -68,17 +85,23 @@ function App() {
             <li key={index} 
                 onClick={() => handleItemClick(index, false)}
                 style={{ textDecoration: selectedItemId === index ? 'underline' : 'none' }}
-            >
-              {item}
-            </li>
+            >{item}</li>
           ))}
         </ul>
         <div><h5>Transcript:</h5></div>
-        <p>{transcript}</p>
-        <div><h5>Spiced Transcript:</h5></div>
-        <p>{summary}</p>
+        <textarea defaultValue={transcript}/>
+        <div><h5>Summary:</h5></div>
+        <textarea defaultValue={spiced.summary}/>
+        <div><h5>Pain:</h5></div>
+        <textarea defaultValue={spiced.pain}/>
+        <div><h5>Impact:</h5></div>
+        <textarea defaultValue={spiced.impact}/>
+        <div><h5>Critical Event:</h5></div>
+        <textarea defaultValue={spiced.criticalEvent}/>
+        <div><h5>Decision Criteria:</h5></div>
+        <textarea defaultValue={spiced.decisionCriteria}/>
         <button onClick={() => handleItemClick(selectedItemId, true)}>Regenerate</button>
-        <button disabled={isSubmitting} onClick={handleSalesForce}>Save to Salesforce</button>
+        {/* <button disabled={isSubmitting} onClick={handleSalesForce}>Save to Salesforce</button> */}
       </header>
     </div>
   );
