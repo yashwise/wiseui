@@ -3,10 +3,8 @@ import React, { useEffect } from 'react';
 import './App.css';
 import { useParams, Link } from 'react-router-dom';
 
-function App() {
+function Transcript() {
   const { id } = useParams();
-  // const templist = [];//['testTranscript1.txt', 'testTranscript2.txt'];
-  // const [blobsList, setblobsList] = React.useState(templist);
   // const url = "https://yashwisetestapp.azurewebsites.net/api";
   const url = "http://127.0.0.1:5000";
 
@@ -20,15 +18,13 @@ function App() {
     // 'transcript_content': ''
   }
   const [spiced, setSpiced] = React.useState(tempSummary);
-  
   const [transcript_content, setTranscript] = React.useState('');
-  const [selectedItemId, setSelectedItemId] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+    setLoading(true)
       let api_url = `${url}/transcriptsummary`;
       api_url = `${api_url}?transcript=${id}`;
       // api_url = `${api_url}&regenerate=${regenerate}`;
@@ -68,6 +64,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <div>{loading && <p>Loading</p>}</div>
         <div><h5>Transcript:</h5></div>
         <textarea defaultValue={transcript_content}/>
         <div><h5>Summary:</h5></div>
@@ -99,4 +96,4 @@ function App() {
   );
 }
 
-export default App;
+export default Transcript;

@@ -28,7 +28,16 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+    //   let api_url = `${url}/gettranscripts`;
+    //   const data = await fetch(api_url);
+    //   console.log(data);
+    //   const json = await data.json();
+    //   if (json.blobs_list)setblobsList(json.blobs_list);
+    //   setLoading(false)
+    // };
+    // fetchData();
+    // console.log('i fire once');
+    setLoading(true)
       let api_url = `${url}/transcriptsummary`;
       api_url = `${api_url}?transcript=${id}`;
       // api_url = `${api_url}&regenerate=${regenerate}`;
@@ -47,6 +56,29 @@ function App() {
     };
     fetchData();
   }, []);
+
+
+
+  // const handleTranscriptClick = async(itemId, regenerate=false) => {
+  //   if (selectedItemId !== itemId || regenerate) {
+  //     setSelectedItemId(itemId);
+  //     setLoading(true)
+  //     let api_url = `${url}/httpexample`;
+  //     api_url = `${api_url}?transcript=${blobsList[itemId]}`;
+  //     api_url = `${api_url}&regenerate=${regenerate}`;
+  //     const data = await fetch(api_url);
+  //     const json = await data.json();
+  //     console.log(json);
+  //     if (json.transcript_content) setTranscript(json.transcript_content);
+  //     if (json.spiced){
+  //       setSpiced( spiced => ({
+  //         ...spiced, 
+  //         ...json.spiced
+  //       }));
+  //     }
+  //     setLoading(false)
+  //   } 
+  // };
 
   const handleSaveToWise = async(event) => {
     event.preventDefault();
@@ -68,6 +100,18 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/* <div>{loading && <p>Loading</p>}</div>
+        <p>
+          Select Transcript to view Summary
+        </p>
+        <ul>
+          {blobsList.map( (item,index) => (
+            <li key={index} 
+                onClick={() => handleTranscriptClick(index, false)}
+                style={{ textDecoration: selectedItemId === index ? 'underline' : 'none' }}
+            >{item}</li>
+          ))}
+        </ul> */}
         <div><h5>Transcript:</h5></div>
         <textarea defaultValue={transcript_content}/>
         <div><h5>Summary:</h5></div>
